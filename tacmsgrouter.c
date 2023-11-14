@@ -79,8 +79,11 @@ void *mainthread(void *ptr)
 				strcpy(outbuf, line);	// change this
 				log_debug("[%d] Writing to pipe: %s [%d]",getpid(), outbuf, strlen(outbuf));
 				write_pipe(outbuf);		// write back to own UI
-				log_debug("[%d] Writing to TCP socket: %s [%d]",getpid(), outbuf, strlen(outbuf));
 				
+                // This is disabled when we're running all alone
+                if(0) 
+                {
+                    log_debug("[%d] Writing to TCP socket: %s [%d]",getpid(), outbuf, strlen(outbuf));
 					int sockfd;
 					struct sockaddr_in servaddr;
 					log_debug("[%d] SENDING msg to socket: %s [%d]",getpid(),outbuf,sizeof(outbuf));
@@ -106,6 +109,7 @@ void *mainthread(void *ptr)
 					}
 					write(sockfd, outbuf, sizeof(outbuf));
 					close(sockfd);
+                }
 			}
 		fclose(fp);
 	}
